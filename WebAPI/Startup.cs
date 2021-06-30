@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using WebAPI.Data;
+using WebAPI.Models;
 
 namespace WebAPI
 {
@@ -25,6 +28,10 @@ namespace WebAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
             });
+
+            services.AddDbContext<BookShopDbContext>(options =>
+                options.UseSqlServer(
+                    this.Configuration.GetConnectionString("DefaultConnection")));
         }
 
 
@@ -37,6 +44,8 @@ namespace WebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
             }
+
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

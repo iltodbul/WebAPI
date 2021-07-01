@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using WebAPI.Data;
 using WebAPI.Models;
+using WebAPI.Services;
+using WebAPI.Services.Contracts;
 
 namespace WebAPI
 {
@@ -32,6 +34,9 @@ namespace WebAPI
             services.AddDbContext<BookShopDbContext>(options =>
                 options.UseSqlServer(
                     this.Configuration.GetConnectionString("DefaultConnection")));
+
+            // Application services
+            services.AddTransient<IBooksService, BooksService>();
         }
 
 

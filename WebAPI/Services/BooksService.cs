@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using WebAPI.Data;
 using WebAPI.Models;
 using WebAPI.Services.Contracts;
@@ -15,9 +17,9 @@ namespace WebAPI.Services
             this._db = db;
         }
 
-        public ICollection<Book> GetAllBooks()
+        public async Task<IEnumerable<Book>> GetAllBooks()
         {
-            var books = this._db.Books.ToList();
+            var books = await this._db.Books.ToListAsync();
             return books;
         }
 

@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using WebAPI.Services.Contracts;
 
 namespace WebAPI.Controllers
@@ -15,19 +19,25 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllBooks()
+        public async Task<IActionResult> GetAllBooks()
         {
-            var books = this._booksService.GetAllBooks();
-            return Ok(books);
-
+            try
+            {
+                var books = await _booksService.GetAllBooks();
+                return Ok(books);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
+            }
         }
 
         [HttpGet("{name}")]
         public IActionResult GetBookByName(string name)
         {
-            var books = this._booksService.GetBooksByName(name);
+            var books = _booksService.GetBooksByName(name);
 
-            if (books.Count == 0)
+            if (!books.Any())
             {
                 return NoContent();
             }

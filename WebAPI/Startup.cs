@@ -37,6 +37,7 @@ namespace WebAPI
 
             // Application services
             services.AddTransient<IBooksService, BooksService>();
+            services.AddTransient<IAuthorService, AuthorService>();
         }
 
 
